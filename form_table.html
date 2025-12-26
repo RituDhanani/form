@@ -86,6 +86,7 @@
             <th>Country</th>
             <th>State</th>
             <th>City</th>
+            <th>time</th>
         </tr>
     </thead>
     <tbody></tbody>
@@ -141,7 +142,8 @@ stateSelect.addEventListener("change", function () {
             age: 25,
             country: "India",
             state: "Gujarat",
-            city: "Surat"
+            city: "Surat",
+            Time: "5:10:30"
         },
         {
             name: "khushi",
@@ -151,7 +153,8 @@ stateSelect.addEventListener("change", function () {
             age: 28,
             country: "India",
             state: "Maharashtra",
-            city: "Mumbai"
+            city: "Mumbai",
+            Time: "13:11:00 "
         }
     ];
 
@@ -171,6 +174,7 @@ stateSelect.addEventListener("change", function () {
                     <td>${user.country}</td>
                     <td>${user.state}</td>
                     <td>${user.city}</td>
+                    <td>${user.Time}</td>
                 </tr>`;
             tableBody.innerHTML += row;
         });
@@ -195,7 +199,8 @@ stateSelect.addEventListener("change", function () {
             age: document.getElementById("age").value,
             country: document.getElementById("country").value,
             state: document.getElementById("state").value,
-            city: document.getElementById("city").value
+            city: document.getElementById("city").value,
+            Time: new Date().toLocaleTimeString()
         };
 
         userData.push(newUser);
