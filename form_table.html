@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">    
+<head>
+    <meta charset="utf-8">
+    <title>page1</title>
+</head>
+<body>
+
+<form id="userForm">
+    <h1> Fill this Form</h1>
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br><br>
+
+    <label for="email">EmailId:</label>
+    <input type="email" id="email" name="email" required>
+    <br><br>
+
+    <label for="gender">Gender:</label>
+    <input type="radio" id="male" name="gender" value="male">
+    <label for="male">Male</label>
+    <input type="radio" id="female" name="gender" value="female">
+    <label for="female">Female</label>
+    <br><br>    
+
+    <label for="hobbies">Hobbies:</label>
+    <input type="checkbox" id="reading" name="hobbies" value="reading">
+    <label for="reading">Reading</label>
+    <input type="checkbox" id="travelling" name="hobbies" value="travelling">
+    <label for="travelling">Travelling</label>
+    <input type="checkbox" id="drawing" name="hobbies" value="drawing">
+    <label for="drawing">Drawing</label>
+    <input type="checkbox" id="writing" name="hobbies" value="writing">
+    <label for="writing">Writing</label>
+    <br><br>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" min="1" max="100">
+    <br><br>
+
+    <label for="state">State:</label>
+    <select id="state" name="state">
+        <option value="">Select State</option>
+        <option value="Gujarat">Gujarat</option>
+        <option value="Maharashtra">Maharashtra</option>
+        <option value="Karnataka">Karnataka</option>
+        <option value="Panjab">Panjab</option>
+        <option value="Mizoram">Mizoram</option>
+    </select>
+    <br><br>
+
+    <label for="city">City:</label>
+    <select id="city" name="city">
+        <option value="">Select City</option>
+        <option value="Surat">Surat</option>
+        <option value="Ahemdabad">Ahemdabad</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Jaipur">Jaipur</option>
+        <option value="Banglor">Banglor</option>
+        <option value="Chennai">Chennai</option>
+    </select>
+    <br><br>
+
+    <input type="submit" value="Save">
+</form>
+
+<hr>
+
+<h2> Data Table</h2>
+
+<table id="dataTable">
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+    </style>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Hobbies</th>
+            <th>Age</th>
+            <th>State</th>
+            <th>City</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+
+<script>
+   
+    const userData = [
+        {
+            name: "Ritu",
+            email: "ritu@gmail.com",
+            gender: "female",
+            hobbies: "reading, travelling",
+            age: 25,
+            state: "Gujarat",
+            city: "Surat"
+        },
+        {
+            name: "khushi",
+            email: "khushi@gmail.com",
+            gender: "female",
+            hobbies: "drawing, writing",
+            age: 28,
+            state: "Maharashtra",
+            city: "Mumbai"
+        }
+    ];
+
+    const tableBody = document.querySelector("#dataTable tbody");
+
+    
+    function renderTable() {
+        tableBody.innerHTML = "";
+        userData.forEach(user => {
+            const row = `
+                <tr>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.gender}</td>
+                    <td>${user.hobbies}</td>
+                    <td>${user.age}</td>
+                    <td>${user.state}</td>
+                    <td>${user.city}</td>
+                </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    
+    window.onload = renderTable;
+
+  
+    document.getElementById("userForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const hobbies = Array.from(
+            document.querySelectorAll('input[name="hobbies"]:checked')
+        ).map(h => h.value).join(", ");
+
+        const newUser = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            gender: document.querySelector('input[name="gender"]:checked')?.value || "",
+            hobbies: hobbies,
+            age: document.getElementById("age").value,
+            state: document.getElementById("state").value,
+            city: document.getElementById("city").value
+        };
+
+        userData.push(newUser);
+        renderTable();
+        this.reset();
+    });
+</script>
+
+</body>
+</html>
