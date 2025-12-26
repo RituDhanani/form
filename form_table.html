@@ -13,7 +13,7 @@
     <input type="text" id="name" name="name" required>
     <br><br>
 
-    <label for="email">EmailId:</label>
+    <label for="email">EmailId:</label>.  
     <input type="email" id="email" name="email" required>
     <br><br>
 
@@ -39,26 +39,23 @@
     <input type="number" id="age" name="age" min="1" max="100">
     <br><br>
 
-    <label for="state">State:</label>
-    <select id="state" name="state">
-        <option value="">Select State</option>
-        <option value="Gujarat">Gujarat</option>
-        <option value="Maharashtra">Maharashtra</option>
-        <option value="Karnataka">Karnataka</option>
-        <option value="Panjab">Panjab</option>
-        <option value="Mizoram">Mizoram</option>
+    <label>Country:</label>
+    <select id="country" required>
+        <option value="">Select Country</option>
     </select>
     <br><br>
 
-    <label for="city">City:</label>
-    <select id="city" name="city">
+
+    <label>State:</label>
+    <select id="state" required>
+        <option value="">Select State</option>
+    </select>
+    <br><br>
+
+
+    <label>City:</label>
+    <select id="city" required>
         <option value="">Select City</option>
-        <option value="Surat">Surat</option>
-        <option value="Ahemdabad">Ahemdabad</option>
-        <option value="Mumbai">Mumbai</option>
-        <option value="Jaipur">Jaipur</option>
-        <option value="Banglor">Banglor</option>
-        <option value="Chennai">Chennai</option>
     </select>
     <br><br>
 
@@ -67,7 +64,7 @@
 
 <hr>
 
-<h2> Data Table</h2>
+<h2>Table</h2>
 
 <table id="dataTable">
     <style>
@@ -86,6 +83,7 @@
             <th>Gender</th>
             <th>Hobbies</th>
             <th>Age</th>
+            <th>Country</th>
             <th>State</th>
             <th>City</th>
         </tr>
@@ -93,9 +91,47 @@
     <tbody></tbody>
 </table>
 
-
 <script>
-   
+    const countryStateCityData = {
+        India: {
+            Gujarat: ["Surat", "Ahmedabad", "Vadodara"],
+            Maharashtra: ["Mumbai", "Pune", "Nagpur"],
+            Karnataka: ["Bangalore", "Mysore", "Mangalore"]
+        },
+        USA: {
+            California: ["Los Angeles", "San Francisco", "San Diego"],
+            Texas: ["Houston", "Dallas", "Austin"],
+            Florida: ["Miami", "Orlando", "Tampa"]
+        }
+    };
+    const countrySelect = document.getElementById("country");
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+    for (const country in countryStateCityData) {
+        countrySelect.add(new Option(country, country));
+    }
+  countrySelect.addEventListener("change", function () {
+    stateSelect.innerHTML = '<option value="">Select State</option>';
+    citySelect.innerHTML = '<option value="">Select City</option>';
+
+    if (this.value) {
+        for (let state in countryStateCityData[this.value]) {
+            stateSelect.add(new Option(state, state));
+        }
+    }
+});
+
+
+stateSelect.addEventListener("change", function () {
+    citySelect.innerHTML = '<option value="">Select City</option>';
+
+    if (this.value) {
+        countryStateCityData[countrySelect.value][this.value].forEach(city => citySelect.add(new Option(city, city)));
+    }
+});
+
+    
+
     const userData = [
         {
             name: "Ritu",
@@ -103,6 +139,7 @@
             gender: "female",
             hobbies: "reading, travelling",
             age: 25,
+            country: "India",
             state: "Gujarat",
             city: "Surat"
         },
@@ -112,6 +149,7 @@
             gender: "female",
             hobbies: "drawing, writing",
             age: 28,
+            country: "India",
             state: "Maharashtra",
             city: "Mumbai"
         }
@@ -130,6 +168,7 @@
                     <td>${user.gender}</td>
                     <td>${user.hobbies}</td>
                     <td>${user.age}</td>
+                    <td>${user.country}</td>
                     <td>${user.state}</td>
                     <td>${user.city}</td>
                 </tr>`;
@@ -154,6 +193,7 @@
             gender: document.querySelector('input[name="gender"]:checked')?.value || "",
             hobbies: hobbies,
             age: document.getElementById("age").value,
+            country: document.getElementById("country").value,
             state: document.getElementById("state").value,
             city: document.getElementById("city").value
         };
