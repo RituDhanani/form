@@ -45,13 +45,11 @@
     </select>
     <br><br>
 
-
     <label>State:</label>
     <select id="state" required>
         <option value="">Select State</option>
     </select>
     <br><br>
-
 
     <label>City:</label>
     <select id="city" required>
@@ -111,10 +109,9 @@
     for (const country in countryStateCityData) {
         countrySelect.add(new Option(country, country));
     }
-  countrySelect.addEventListener("change", function () {
+    countrySelect.addEventListener("change", function () {
     stateSelect.innerHTML = '<option value="">Select State</option>';
     citySelect.innerHTML = '<option value="">Select City</option>';
-
     if (this.value) {
         for (let state in countryStateCityData[this.value]) {
             stateSelect.add(new Option(state, state));
@@ -122,16 +119,12 @@
     }
 });
 
-
 stateSelect.addEventListener("change", function () {
     citySelect.innerHTML = '<option value="">Select City</option>';
-
-    if (this.value) {
+     if (this.value) {
         countryStateCityData[countrySelect.value][this.value].forEach(city => citySelect.add(new Option(city, city)));
     }
 });
-
-    
 
     const userData = [
         {
@@ -160,7 +153,6 @@ stateSelect.addEventListener("change", function () {
 
     const tableBody = document.querySelector("#dataTable tbody");
 
-    
     function renderTable() {
         tableBody.innerHTML = "";
         userData.forEach(user => {
@@ -179,11 +171,8 @@ stateSelect.addEventListener("change", function () {
             tableBody.innerHTML += row;
         });
     }
-
-    
+ 
     window.onload = renderTable;
-
-  
     document.getElementById("userForm").addEventListener("submit", function(e) {
         e.preventDefault();
 
@@ -202,12 +191,10 @@ stateSelect.addEventListener("change", function () {
             city: document.getElementById("city").value,
             Time: new Date().toLocaleTimeString()
         };
-
         userData.push(newUser);
         renderTable();
         this.reset();
     });
 </script>
-
 </body>
 </html>
