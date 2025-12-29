@@ -57,7 +57,8 @@
     </select>
     <br><br>
 
-    <input type="submit" value="Save">
+    <input type="submit" id="submitBtn" value="Submit">
+    <button type="button" id="cancelBtn" style="display:none;">Cancel</button>
 </form>
 
 <hr>
@@ -85,9 +86,10 @@
             <th>State</th>
             <th>City</th>
             <th>time</th>
+            <th>Action</th>
         </tr>
     </thead>
-    <tbody></tbody>
+    <tbody id="tableBody"></tbody>
 </table>
 
 <script>
@@ -151,7 +153,8 @@ stateSelect.addEventListener("change", function () {
         }
     ];
 
-    const tableBody = document.querySelector("#dataTable tbody");
+    let editIndex = null;
+    const tableBody = document.getElementById("tableBody");
 
     function renderTable() {
         tableBody.innerHTML = "";
@@ -167,11 +170,16 @@ stateSelect.addEventListener("change", function () {
                     <td>${user.state}</td>
                     <td>${user.city}</td>
                     <td>${user.Time}</td>
+                    <td>
+                        <button onclick="editUser(${userData.indexOf(user)})">Edit</button>
+                        <button onclick="deleteUser(${userData.indexOf(user)})">Delete</button>
+                    </td>
                 </tr>`;
             tableBody.innerHTML += row;
         });
     }
- 
+    renderTable();
+
     window.onload = renderTable;
     document.getElementById("userForm").addEventListener("submit", function(e) {
         e.preventDefault();
@@ -191,10 +199,51 @@ stateSelect.addEventListener("change", function () {
             city: document.getElementById("city").value,
             Time: new Date().toLocaleTimeString()
         };
-        userData.push(newUser);
+        if (editIndex !== null) {
+            userData[editIndex] = newUser;
+            editIndex = null;
+            document.getElementById("submitBtn").value = "Submit";
+            document.getElementById("cancelBtn").style.display = "none";
+        } else {
+            userData.push(newUser);
+        }
         renderTable();
         this.reset();
     });
+    function editUser(index) {
+        const user = userData[index];
+        editIndex = index;
+
+        document.getElementById("name").value = user.name;
+        document.getElementById("email").value = user.email;
+        document.getElementById("age").value = user.age;
+        document.getElementById("country").value = user.country;
+        countrySelect.dispatchEvent(new Event('change'));
+        document.getElementById("state").value = user.state;
+        stateSelect.dispatchEvent(new Event('change'));
+        document.getElementById("city").value = user.city;
+
+        document.querySelector(`input[name="gender"][value="${user.gender}"]`).checked = true;  
+        document.querySelectorAll('input[name="hobbies"]').forEach(h => {
+            h.checked = user.hobbies.includes(h.value);
+        });
+        document.getElementById("submitBtn").value = "Update";
+        document.getElementById("cancelBtn").style.display = "inline";
+    }
+    function deleteUser(index) {
+        userData.splice(index, 1);
+        renderTable();
+    }
+    document.getElementById("cancelBtn").addEventListener("click", function() {
+        document.getElementById("userForm").reset();
+        editIndex = null;
+        document.getElementById("submitBtn").value = "Submit";
+        this.style.display = "none";
+    });
+
 </script>
 </body>
-</html>
+</html> 
+
+
+
