@@ -67,6 +67,12 @@
 <input type="text" id="searchInput" placeholder="Search...">
 <br><br>
 
+<label>Sort by Name: </label>
+<select id="sortSelect">
+    <option value="asc">Ascending</option>
+    <option value="desc">Descending</option>
+</select>
+<br><br>
 
 <h2>Table</h2>
 
@@ -162,9 +168,17 @@ stateSelect.addEventListener("change", function () {
 
     let editIndex = null;
     const tableBody = document.getElementById("tableBody");
+    function sortByName(data) {
+        const sortOrder = document.getElementById("sortSelect").value;
+        return data.sort((a, b) => {
+            return sortOrder === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+        });
+    }
 
     function renderTable(filteredData = userData) {
         tableBody.innerHTML = "";
+        data=sortByName(filteredData);
+
         filteredData.forEach(user => {
         
             const row = `
@@ -186,6 +200,8 @@ stateSelect.addEventListener("change", function () {
             tableBody.innerHTML += row;
         });
     }
+    document.getElementById("sortSelect").addEventListener("change", renderTable);
+
     document.getElementById("searchInput").addEventListener("input", function() {
         const searchTerm = this.value.toLowerCase();
         const filteredData = userData.filter(user => user.name.toLowerCase().includes(searchTerm));
