@@ -2,7 +2,7 @@
 <html lang="en">    
 <head>
     <meta charset="utf-8">
-    <title>page1</title>
+    <title>demo</title>
 </head>
 <body>
 
@@ -14,7 +14,7 @@
     <input type="text" id="name" name="name"  >
     <br><br>
 
-    <label for="email">EmailId:</label>.  
+    <label for="email">EmailId:</label>  
     <input type="email" id="email" name="email" >
     <br><br>
 
@@ -83,7 +83,7 @@
         }
         th, td {
             border: 1px solid black;
-            padding: 8px;
+            padding: 5px;
         }
     </style>
     <thead>
@@ -177,9 +177,9 @@ stateSelect.addEventListener("change", function () {
 
     function renderTable(filteredData = userData) {
         tableBody.innerHTML = "";
-        data=sortByName(filteredData);
+        const data = sortByName(filteredData);
 
-        filteredData.forEach(user => {
+        data.forEach(user => {
         
             const row = `
                 <tr>
@@ -200,17 +200,26 @@ stateSelect.addEventListener("change", function () {
             tableBody.innerHTML += row;
         });
     }
-    document.getElementById("sortSelect").addEventListener("change", renderTable);
+
+     document.addEventListener("DOMContentLoaded", () => {
+        renderTable(); 
+    });
+    document.getElementById("sortSelect").addEventListener("change", function() {
+        renderTable();
+    });
+
+    
 
     document.getElementById("searchInput").addEventListener("input", function() {
         const searchTerm = this.value.toLowerCase();
         const filteredData = userData.filter(user => user.name.toLowerCase().includes(searchTerm));
         renderTable(filteredData);
     });
-    renderTable();
-    
 
-    window.onload = renderTable;
+    window.onload = function() {
+        renderTable();
+    };  
+
     document.getElementById("userForm").addEventListener("submit", function(e) {
         e.preventDefault();
         document.getElementById("errorMsg").innerText = "";
@@ -249,7 +258,7 @@ stateSelect.addEventListener("change", function () {
           
 
         const newUser = {
-            name,
+            name:name,
             email: email,
             gender: gender.value,
             hobbies: hobbies,
@@ -270,10 +279,10 @@ stateSelect.addEventListener("change", function () {
         renderTable();
         this.reset();
     });
+    
     function editUser(index) {
         const user = userData[index];
         editIndex = index;
-
         document.getElementById("name").value = user.name;
         document.getElementById("email").value = user.email;
         document.getElementById("age").value = user.age;
@@ -282,18 +291,17 @@ stateSelect.addEventListener("change", function () {
         document.getElementById("state").value = user.state;
         stateSelect.dispatchEvent(new Event('change'));
         document.getElementById("city").value = user.city;
-
         document.querySelector(`input[name="gender"][value="${user.gender}"]`).checked = true;  
-        document.querySelectorAll('input[name="hobbies"]').forEach(h => {
-            h.checked = user.hobbies.includes(h.value);
-        });
+        document.querySelectorAll('input[name="hobbies"]').forEach(h => { h.checked = user.hobbies.includes(h.value); });
         document.getElementById("submitBtn").value = "Update";
         document.getElementById("cancelBtn").style.display = "inline";
     }
     function deleteUser(index) {
         userData.splice(index, 1);
         renderTable();
+    
     }
+    
     document.getElementById("cancelBtn").addEventListener("click", function() {
         document.getElementById("userForm").reset();
         editIndex = null;
